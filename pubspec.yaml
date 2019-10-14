@@ -26,6 +26,7 @@ dependencies:
   wifi_iot:
     git: https://github.com/alternadom/WiFiFlutter.git
   permission_handler: '^3.2.0'
+  http: ^0.12.0+2
 
 dev_dependencies:
   flutter_test:

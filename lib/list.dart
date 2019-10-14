@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:wifi_iot/wifi_iot.dart';
+import 'package:http/http.dart' as http;
 
 const NetworkSecurity STA_DEFAULT_SECURITY = NetworkSecurity.WPA;
 
@@ -47,11 +48,37 @@ class _WifiListState extends State<WifiList> {
   handleConnect(network) async {
     await confirmDialog();
 
-    WiFiForIoTPlugin.connect(network.ssid,
-        password: _passwordCtrl.text,
-        joinOnce: true,
-        security: STA_DEFAULT_SECURITY);
-    _passwordCtrl.text = '';
+    try {
+      var response = await WiFiForIoTPlugin.connect(network.ssid,
+          password: _passwordCtrl.text,
+          joinOnce: true,
+          security: STA_DEFAULT_SECURITY);
+
+      if (response == true) {
+        Future.delayed(const Duration(seconds: 1));
+        String url = 'http://meteor-inovasi-digital.id/login?';
+        var response = await http.post(url, body: {
+          'username': 'imron',
+          'password': 'imron',
+          'dst': 'http://meteor-inovasi-digital.id/login?'
+        });
+
+        if (response.statusCode == 200) {
+          Scaffold
+            .of(context)
+            .showSnackBar(SnackBar(content: Text('Connected')));
+        }
+      } else {
+        Scaffold
+            .of(context)
+            .showSnackBar(SnackBar(content: Text('Connection failed')));
+      }
+
+      _passwordCtrl.text = '';
+    } catch (e) {
+      print('Error');
+      print(e);
+    }
   }
 
   Future<Null> getWifiList() async {

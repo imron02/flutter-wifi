@@ -17,13 +17,16 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   Future<bool> checkLocationPermission() async {
-    PermissionStatus permission = await PermissionHandler().checkPermissionStatus(PermissionGroup.location);
+    PermissionStatus permission = await PermissionHandler()
+        .checkPermissionStatus(PermissionGroup.location);
 
     return permission == PermissionStatus.granted;
   }
 
   Future<bool> requestLocationPermission() async {
-    Map<PermissionGroup, PermissionStatus> permissions = await PermissionHandler().requestPermissions([PermissionGroup.location]);
+    Map<PermissionGroup, PermissionStatus> permissions =
+        await PermissionHandler()
+            .requestPermissions([PermissionGroup.location]);
 
     return permissions[PermissionGroup.location] == PermissionStatus.granted;
   }
@@ -45,6 +48,8 @@ class _MyHomePageState extends State<MyHomePage> {
     } on PlatformException {
       isConnectedAndGranted = false;
     }
+
+    if (!mounted) return true;
 
     return isConnectedAndGranted;
   }
@@ -70,7 +75,6 @@ class _MyHomePageState extends State<MyHomePage> {
         child: FutureBuilder(
           future: isConnected(),
           builder: (context, snapshot) {
-
             if (snapshot.hasData) {
               if (snapshot.data == true) {
                 return WifiList();
