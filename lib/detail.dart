@@ -7,7 +7,7 @@ class Detail extends StatefulWidget {
 }
 
 class _DetailState extends State<Detail> {
-  List<ListTile> _wifiClients;
+  List<ListTile> _wifiClients = new List();
 
   @override
   void initState() {
@@ -24,7 +24,6 @@ class _DetailState extends State<Detail> {
       wifiClients = await WiFiForIoTPlugin.getClientList(false, 300);
       ssid = await WiFiForIoTPlugin.getSSID();
     } catch (e) {
-      // Error
       wifiClients = new List<APClient>();
     }
 
