@@ -49,6 +49,10 @@ class _MyHomePageState extends State<MyHomePage> {
     return isConnectedAndGranted;
   }
 
+  handleNavigate() {
+    Navigator.pushNamed(context, '/detail');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,9 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
           IconButton(
             icon: const Icon(Icons.more_vert),
             tooltip: 'Show Snackbar',
-            onPressed: () {
-              print(123);
-            },
+            onPressed: handleNavigate,
           ),
         ],
       ),

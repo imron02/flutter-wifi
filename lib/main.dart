@@ -1,3 +1,4 @@
+import 'package:adawifi/detail.dart';
 import 'package:flutter/material.dart';
 import 'package:adawifi/home.dart';
 
@@ -12,7 +13,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Adawifi'),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => MyHomePage(
+              title: 'Flutter Adawifi',
+            ),
+        '/detail': (context) => Detail()
+      },
     );
   }
 }
