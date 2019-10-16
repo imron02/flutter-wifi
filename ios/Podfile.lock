@@ -1,0 +1,28 @@
+PODS:
+  - Flutter (1.0.0)
+  - permission_handler (3.2.2):
+    - Flutter
+  - wifi_iot (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `.symlinks/flutter/ios`)
+  - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
+  - wifi_iot (from `.symlinks/plugins/wifi_iot/ios`)
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: ".symlinks/flutter/ios"
+  permission_handler:
+    :path: ".symlinks/plugins/permission_handler/ios"
+  wifi_iot:
+    :path: ".symlinks/plugins/wifi_iot/ios"
+
+SPEC CHECKSUMS:
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  permission_handler: d59f41439f5bc6c4d1005f3355e98f05ddc68ece
+  wifi_iot: b5aafd6f9b52f8a357383a1deabab45f31cd602d
+
+PODFILE CHECKSUM: 10ae9c18d12c9ffc2275c9a159a3b1e281990db0
+
+COCOAPODS: 1.7.5

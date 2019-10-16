@@ -76,8 +76,7 @@ class _WifiListState extends State<WifiList> {
 
       _passwordCtrl.text = '';
     } catch (e) {
-      print('Error');
-      print(e);
+      // Error
     }
   }
 
