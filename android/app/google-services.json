@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1068861631350",
+    "firebase_url": "https://adawifi-c4ade.firebaseio.com",
+    "project_id": "adawifi-c4ade",
+    "storage_bucket": "adawifi-c4ade.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1068861631350:android:7b8570bc669d0c0593e857",
+        "android_client_info": {
+          "package_name": "com.example.adawifi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1068861631350-4c403o75tk2idg2qho2ll68o1jbra672.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.adawifi",
+            "certificate_hash": "fe088f45f6713b92756b886c64268c7664599b0e"
+          }
+        },
+        {
+          "client_id": "1068861631350-tfnd5keekd1jan0232sinmth8lial32f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOi56ROl_xpD6ZSIl51bHeq4r14rpvvxY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1068861631350-tfnd5keekd1jan0232sinmth8lial32f.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1068861631350-q38uuptaa98to57kvu963qrr487fhl87.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.adawifi"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

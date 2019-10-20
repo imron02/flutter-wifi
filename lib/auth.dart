@@ -1,12 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Auth extends StatelessWidget {
-  static Material signinButton(String image) {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+    scopes: [
+      'email',
+      'https://www.googleapis.com/auth/contacts.readonly',
+    ],
+  );
+
+  void _signInWithGoogle(BuildContext context) async {
+    try {
+      final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+      final AuthCredential credential = GoogleAuthProvider.getCredential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+      final FirebaseUser user =
+          (await _auth.signInWithCredential(credential)).user;
+
+      if (user.getIdToken() != null) {
+        Navigator.pushNamed(context, '/home');
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Material _signinButton(BuildContext context, String image) {
     return Material(
       color: Colors.transparent,
       child: InkWell(
         customBorder: CircleBorder(),
-        onTap: () => {},
+        onTap: () => _signInWithGoogle(context),
         child: Container(
           child: Image.asset(
             image,
@@ -26,7 +56,31 @@ class Auth extends StatelessWidget {
     );
   }
 
-  final Widget header = Column(
+  Container _body(BuildContext context) {
+    return Container(
+      width: 220,
+      child: Column(
+        children: <Widget>[
+          Text(
+            'Choose your social media account to login',
+            style: TextStyle(fontSize: 20),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: 30),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              _signinButton(context, 'images/google.png'),
+              SizedBox(width: 20),
+              _signinButton(context, 'images/facebook.png'),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
+  final Widget _header = Column(
     children: <Widget>[
       Image.asset(
         'images/logo.png',
@@ -36,28 +90,6 @@ class Auth extends StatelessWidget {
       ),
       Text('Ada WiFi Di Sini'),
     ],
-  );
-
-  final Widget body = Container(
-    width: 220,
-    child: Column(
-      children: <Widget>[
-        Text(
-          'Choose your social media account to login',
-          style: TextStyle(fontSize: 20),
-          textAlign: TextAlign.center,
-        ),
-        SizedBox(height: 30),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            signinButton('images/google.png'),
-            SizedBox(width: 20),
-            signinButton('images/facebook.png'),
-          ],
-        )
-      ],
-    ),
   );
 
   @override
@@ -70,8 +102,8 @@ class Auth extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                header,
-                body,
+                _header,
+                _body(context),
                 RichText(
                     text: TextSpan(
                         text: 'Read our ',
