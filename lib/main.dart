@@ -1,3 +1,4 @@
+import 'package:adawifi/auth.dart';
 import 'package:adawifi/detail.dart';
 import 'package:flutter/material.dart';
 import 'package:adawifi/home.dart';
@@ -15,7 +16,8 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => MyHomePage(
+        '/': (context) => Auth(),
+        '/home': (context) => MyHomePage(
               title: 'Flutter Adawifi',
             ),
         '/detail': (context) => Detail()
