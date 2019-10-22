@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:wifi_iot/wifi_iot.dart';
 import 'package:adawifi/list.dart';
+import 'package:device_id/device_id.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 const NetworkSecurity STA_DEFAULT_SECURITY = NetworkSecurity.WPA;
 
@@ -16,46 +20,101 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  Future<bool> checkLocationPermission() async {
-    PermissionStatus permission = await PermissionHandler()
-        .checkPermissionStatus(PermissionGroup.location);
+  Connectivity _connectivity = new Connectivity();
+  bool isWifiEnable = false;
+  var listener;
 
-    return permission == PermissionStatus.granted;
+  void initState() {
+    super.initState();
+    isWifiEnabled();
+    listener = _connectivity.onConnectivityChanged
+        .listen((ConnectivityResult result) async {
+      if (result == ConnectivityResult.wifi &&
+          await WiFiForIoTPlugin.isEnabled() == true) {
+        setState(() {
+          isWifiEnable = true;
+        });
+      } else {
+        setState(() {
+          isWifiEnable = false;
+        });
+      }
+    });
   }
 
-  Future<bool> requestLocationPermission() async {
-    Map<PermissionGroup, PermissionStatus> permissions =
-        await PermissionHandler()
-            .requestPermissions([PermissionGroup.location]);
+  void dispose() {
+    super.dispose();
+    listener.cancel();
+  }
 
-    return permissions[PermissionGroup.location] == PermissionStatus.granted;
+  void handleChangeWifi(bool value) async {
+    await WiFiForIoTPlugin.setEnabled(value);
+    setState(() {
+      isWifiEnable = value;
+    });
+  }
+
+  Future<bool> isWifiEnabled() async {
+    bool isEnable = await WiFiForIoTPlugin.isEnabled();
+    String ssid = await WiFiForIoTPlugin.getSSID();
+    if (isEnable) {
+      if (ssid != null) {
+        print('Masuk sini');
+        handleConnect();
+      }
+      setState(() {
+        isWifiEnable = true;
+      });
+    }
+    return isEnable;
   }
 
   Future<bool> isConnected() async {
-    bool isConnectedAndGranted;
+    bool isEnabled = false;
 
     try {
-      bool isConnected = await WiFiForIoTPlugin.isConnected();
-      bool isGranted = await checkLocationPermission();
-      if (isGranted == false) {
-        await requestLocationPermission();
-        isGranted = await checkLocationPermission();
-      }
-
-      if (isConnected == true && isGranted) {
-        isConnectedAndGranted = true;
-      }
+      isEnabled = await WiFiForIoTPlugin.isEnabled();
     } on PlatformException {
-      isConnectedAndGranted = false;
+      isEnabled = false;
     }
 
     if (!mounted) return true;
 
-    return isConnectedAndGranted;
+    return isEnabled;
   }
 
   handleNavigate() {
     Navigator.pushNamed(context, '/detail');
+  }
+
+  handleConnect() async {
+    try {
+      var deviceId = await DeviceId.getID;
+      var urlGetUsername =
+          DotEnv().env['BASE_URL'] + "check-auth?deviceId=$deviceId";
+      var account = await http.get(urlGetUsername);
+      Future.delayed(const Duration(seconds: 3), () async {
+        try {
+          String url = "http://192.168.88.1/login?";
+          String username = json.decode(account.body)['email'];
+          String password = json.decode(account.body)['password'];
+          var response = await http.post(url,
+              body: {'username': '$username', 'password': '$password'});
+          if (response.statusCode == 200) {
+            Scaffold.of(context)
+                .showSnackBar(SnackBar(content: Text('Connected')));
+          } else {
+            Scaffold.of(context)
+                .showSnackBar(SnackBar(content: Text('Connection failed')));
+            throw ("cannot access internet");
+          }
+        } catch (e) {
+          print(e);
+        }
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
@@ -64,6 +123,14 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
         actions: <Widget>[
+          Switch(
+            value: isWifiEnable,
+            onChanged: (value) {
+              handleChangeWifi(!isWifiEnable);
+            },
+            activeTrackColor: Colors.lightGreenAccent,
+            activeColor: Colors.green,
+          ),
           IconButton(
             icon: const Icon(Icons.more_vert),
             tooltip: 'Show Snackbar',
@@ -71,22 +138,29 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      body: Container(
-        child: FutureBuilder(
-          future: isConnected(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              if (snapshot.data == true) {
-                return WifiList();
-              }
-            }
+      body: isWifiEnable
+          ? Container(
+              child: FutureBuilder(
+                future: isConnected(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    if (snapshot.data == true) {
+                      return WifiList();
+                    }
+                  }
 
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          },
-        ),
-      ),
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                },
+              ),
+            )
+          : Center(
+              child: GestureDetector(
+                onTap: () => handleChangeWifi(true),
+                child: Text("Turn on Wifi"),
+              ),
+            ),
     );
   }
 }

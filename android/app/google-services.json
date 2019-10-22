@@ -1,50 +1,51 @@
 {
   "project_info": {
-    "project_number": "1068861631350",
-    "firebase_url": "https://adawifi-c4ade.firebaseio.com",
-    "project_id": "adawifi-c4ade",
-    "storage_bucket": "adawifi-c4ade.appspot.com"
+    "project_number": "176081962545",
+    "firebase_url": "https://adawifi-dev.firebaseio.com",
+    "project_id": "adawifi-dev",
+    "storage_bucket": "adawifi-dev.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1068861631350:android:7b8570bc669d0c0593e857",
+        "mobilesdk_app_id": "1:176081962545:android:b9b217299f641360f67710",
         "android_client_info": {
           "package_name": "com.example.adawifi"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1068861631350-4c403o75tk2idg2qho2ll68o1jbra672.apps.googleusercontent.com",
+          "client_id": "176081962545-llvoh2tmcpdjgjc8hu8pkuvpd2fd2sla.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.adawifi",
-            "certificate_hash": "fe088f45f6713b92756b886c64268c7664599b0e"
+            "certificate_hash": "c3b1fd07a5b89934f8f55a71b01c236641f61132"
           }
         },
         {
-          "client_id": "1068861631350-tfnd5keekd1jan0232sinmth8lial32f.apps.googleusercontent.com",
+          "client_id": "176081962545-r6pq9tp9ffhg3qsnet71l0djivgi8j8s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.adawifi",
+            "certificate_hash": "731faa82535f4837ddbd56ec6e2375a39061c630"
+          }
+        },
+        {
+          "client_id": "176081962545-jc4r37cs1o19n9agg2pv45kv3eqm3k7l.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCOi56ROl_xpD6ZSIl51bHeq4r14rpvvxY"
+          "current_key": "AIzaSyCpMxBEPMENyn7pOnNfK2CQE6hN87NuAOk"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1068861631350-tfnd5keekd1jan0232sinmth8lial32f.apps.googleusercontent.com",
+              "client_id": "176081962545-jc4r37cs1o19n9agg2pv45kv3eqm3k7l.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "1068861631350-q38uuptaa98to57kvu963qrr487fhl87.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.adawifi"
-              }
             }
           ]
         }
